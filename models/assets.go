@@ -1,12 +1,15 @@
 package models
 
+import "time"
+
 type Asset struct {
-	Checksum    map[string]string `json:"checksum"`
-	DownloadURL string            `json:"downloadUrl"`
-	Format      string            `json:"format"`
-	ID          string            `json:"id"`
-	Path        string            `json:"path"`
-	Repository  string            `json:"repository"`
+	Checksum     map[string]string `json:"checksum"`
+	DownloadURL  string            `json:"downloadUrl"`
+	Format       string            `json:"format"`
+	ID           string            `json:"id"`
+	Path         string            `json:"path"`
+	Repository   string            `json:"repository"`
+	LastModified time.Time         `json:"lastModified"`
 }
 
 type AssetListResponse struct {
