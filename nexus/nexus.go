@@ -2,6 +2,7 @@
 package nexus
 
 import (
+	"crypto/tls"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -15,6 +16,7 @@ type ClientConfig struct {
 	Host     string
 	Username string
 	Password string
+	Insecure bool
 }
 
 // Store basic auth info and http settings for authenticating with the Nexus API.
@@ -54,8 +56,12 @@ func (r *NexusError) Error() string {
 // NewClient constructs a Nexus API client object based on the user suplied config.
 // This is useful for stuff like appling HTTP client config globally, for examplpe, allowing insecure https.
 func NewClient(config ClientConfig) Client {
-	// TODO: Read and configure insecure tls if necessary.
 	httpClient := &http.Client{}
+	if config.Insecure {
+		httpClient.Transport = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	}
 
 	c := Client{
 		client: httpClient,
